@@ -22,4 +22,4 @@ Automatizar el registro y seguimiento de solicitudes administrativas de IT (rest
 4. Abrí una terminal o consola de comandos en la carpeta del proyecto.
 5. Ejecutá el script principal con el siguiente comando:
    ```bash
-   python bot.py
+   Chatbot.py
