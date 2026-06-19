@@ -120,7 +120,7 @@ def consultar_estado():
             print(f"[Error]: No se encontraron registros para el ticket ID '{ticket_id}'.")
             
     except ValueError:
-        print("[Error]: El formato del ID es incorrecto. Los tickets contienen únicamente números.")
+        print("[Error]: El formato del ID es incorrecto. Los tickets contienen únicamente números y no palabras.")
 
 def fase_menu_principal(legajo):
     """Gestiona el ruteo validando que el usuario ingrese opciones numéricas válidas."""
