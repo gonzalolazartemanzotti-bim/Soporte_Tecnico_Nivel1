@@ -5,23 +5,35 @@ import os
 import random
 from datetime import datetime
 
-# Constante global para definir la ruta del archivo de la base de datos
-DB_FILE = 'tickets.json'
+# CONFIGURACIÓN DE RUTAS ABSOLUTAS
+
+# Se obtiene la ruta exacta de la carpeta donde está el script
+DIRECTORIO_ACTUAL = os.path.dirname(os.path.abspath(__file__))
+
+# Se fuerza a que el archivo JSON se guarde en esa misma carpeta
+DB_FILE = os.path.join(DIRECTORIO_ACTUAL, 'tickets.json')
 
 
 # CAPA DE ACCESO A DATOS (PERSISTENCIA)
 
 
 def inicializar_base_datos():
-    """Crea el archivo JSON si no existe en el sistema."""
-    if not os.path.exists(DB_FILE):
+    """Crea el archivo JSON si no existe, o lo repara si está totalmente vacío."""
+    # Se verifica si no existe, o si existe pero pesa 0 bytes
+    if not os.path.exists(DB_FILE) or os.path.getsize(DB_FILE) == 0:
         with open(DB_FILE, 'w') as file:
+            # Se le inyecta la estructura inicial obligatoria
             json.dump({"tickets": {}}, file)
 
 def cargar_datos():
-    """Lee y retorna los datos actuales de la base de datos JSON."""
+    """Lee y retorna los datos actuales de la base de datos JSON. 
+    Si el archivo está vacío o corrupto, lo repara automáticamente."""
     with open(DB_FILE, 'r') as file:
-        return json.load(file)
+        try:
+            return json.load(file)
+        except ValueError:
+            # Si el archivo existe pero está totalmente en blanco, se devuelve la estructura base para que no crashee
+            return {"tickets": {}}
 
 def guardar_datos(data):
     """Sobrescribe el archivo JSON con los datos actualizados."""
